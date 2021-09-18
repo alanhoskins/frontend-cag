@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, useStep } from 'react-hooks-helper';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -17,27 +17,26 @@ import { submitSignUpStep } from '../api/endpoints';
 import { setSessionCookie } from '../utils/session';
 
 // Establish our steps
-const steps = [
+const defaultSteps = [
   { id: 'landing' },
   { id: 'basics' },
   { id: 'privacy' },
   { id: 'actorInfo1' },
-  { id: 'actorInfo2' },
-  { id: 'offstageRoles' },
+  // { id: 'actorInfo2' }, only if "on-stage" or both
+  // { id: 'offstageRoles' }, only if "off-stage" or both
   { id: 'profilePhoto' },
   { id: 'demographics' },
   { id: 'profilePreview' }
 ];
 
 // flatten our step id's into a single array
-const flatSteps = steps.map(step => step.id);
+const flatSteps = (stepsArrObj: any) => stepsArrObj.map((step: any) => step.id);
 
 // establish our form data structure
 // assign defaults
 const defaultData = {
   landingType: '',
-  landingPerformTypeOnStage: false,
-  landingPerformTypeOffStage: false,
+  performType: '',
 
   basicsFirstName: '',
   basicsLastName: '',
@@ -75,9 +74,31 @@ const defaultData = {
 };
 
 const SignUp = () => {
+  const [steps, setSteps] = useState(defaultSteps);
   const [formData, setForm] = useForm(defaultData); // useForm is an extension of React hooks to manage form state
-  const { step, navigation } = useStep({ steps: flatSteps as any }); // defaults for our steps
+  const { step, navigation } = useStep({ steps: flatSteps(steps) as any }); // defaults for our steps
   const [landingStep, setLandingStep] = useState(1); // Landing has two steps internally, based on if "individual"
+
+  useEffect(() => {
+    const newSteps = [...steps];
+    const performType = formData.performType;
+
+    if (performType === '') {
+      return;
+    }
+
+    if (performType === 'on-stage') {
+      newSteps.splice(4, 0, { id: 'actorInfo2' });
+    } else if (performType === 'off-stage') {
+      newSteps.splice(-3, 0, { id: 'offstageRoles' });
+    } else if (performType === 'both-stage') {
+      newSteps.splice(4, 0, { id: 'actorInfo2' });
+      newSteps.splice(-3, 0, { id: 'offstageRoles' });
+    }
+
+    // set new steps
+    setSteps(newSteps);
+  }, [formData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const setPrivacyAgree = () => {
     const target = {
