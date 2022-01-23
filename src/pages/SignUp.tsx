@@ -98,7 +98,7 @@ const SignUp = () => {
     }
 
     setSteps(newSteps);
-  }, [formData.stageRole]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [formData.stageRole]); // eslint-disable-line
 
   const setPrivacyAgree = () => {
     const target = {
