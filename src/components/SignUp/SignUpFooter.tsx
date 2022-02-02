@@ -120,10 +120,11 @@ const Pagination = styled.ul`
   align-items: center;
   display: flex;
   height: 100%;
-  justify-content: space-evenly;
+  justify-content: space-between;
   margin: 0;
   padding: 0;
   width: 100%;
+  padding-right: 29px;
 
   .pagination-flow {
     width: 29px;
@@ -131,22 +132,24 @@ const Pagination = styled.ul`
     border-radius: 50%;
     text-align: center;
     font-size: 12px;
-    border: 1px solid #d4d6df;
+    // border: 1px solid #d4d6df;
     background: #d4d6df;
     list-style-type: none;
     position: relative;
     font-family: Montserrat;
     align-items: center;
     // margin: 10px 0;
+    display: block;
+    // flex: 0 1 100%; /* Default */
 
     &.complete {
       background: #f9e9b1;
-      border: 1px solid #f9e9b1;
+      // border: 1px solid #f9e9b1;
     }
 
     &.active {
       background: #e9c268;
-      border: 1px solid #e9c268;
+      // border: 1px solid #e9c268;
     }
   }
 
@@ -155,9 +158,11 @@ const Pagination = styled.ul`
     content: "";
     right: -50%;
     top: 0%;
-    width: 50%;
+    // width: 50%;
+    width: 29px;
     height: 50%;
     border-bottom: 2px solid black;
+    margin-left: 29px;
   }
 `;
 
