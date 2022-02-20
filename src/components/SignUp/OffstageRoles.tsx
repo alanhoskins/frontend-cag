@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fonts } from '../../theme/styleVars';
+import Accordion from 'react-bootstrap/Accordion';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
@@ -8,6 +8,7 @@ import Container from 'react-bootstrap/Container';
 import { Tagline, Title } from '../layout/Titles';
 import GenericAccordion from '../../genericComponents/GenericAccordion';
 import Checkbox from '../../genericComponents/Checkbox';
+import { fonts } from '../../theme/styleVars';
 import yellow_blob_1 from '../../images/yellow_blob_1.svg';
 
 const OffstageRoles: React.FC<{
@@ -211,59 +212,62 @@ const OffstageRoles: React.FC<{
           <TitleFourth>Select all applicable positions</TitleFourth>
         </Col>
       </Row>
-      {Object.keys(offstageRolesObj).map(objKey => {
-        const currObjKey = (offstageRolesObj as any)[objKey as any];
-        const {
-          sectionStateValue,
-          sectionStateName,
-          textHeader,
-          role,
-          checkboxes
-        } = currObjKey;
+      <Row>
+        <Col lg="10">
+          <StyledAccordion defaultActiveKey="0">
+            {Object.keys(offstageRolesObj).map((objKey, objI) => {
+              const currObjKey = (offstageRolesObj as any)[objKey as any];
+              const {
+                sectionStateValue,
+                sectionStateName,
+                textHeader,
+                role,
+                checkboxes
+              } = currObjKey;
 
-        return (
-          <Row key={`accordion-row-${textHeader}`}>
-            <Col lg="10">
-              <GenericAccordion
-                key={`accordion-${textHeader}`}
-                textHeader={textHeader}
-              >
-                <Row>
-                  <Col lg="7">
-                    {checkboxes.map((chk: { label: any; value: any }) => {
-                      const { label: chkLabel, value: chkValue } = chk;
+              return (
+                <GenericAccordion
+                  eventKey={objI}
+                  key={`accordion-item-${textHeader}`}
+                  textHeader={textHeader}
+                >
+                  <Row>
+                    <Col lg="7">
+                      {checkboxes.map((chk: { label: any; value: any }) => {
+                        const { label: chkLabel, value: chkValue } = chk;
 
-                      return (
-                        <Checkbox
-                          checked={isRoleInRolesSection(
-                            sectionStateValue,
-                            chk.value
-                          )}
-                          fieldType="checkbox"
-                          key={`${textHeader}-chk-${chkLabel}-${chkValue}`}
-                          label={chkLabel}
-                          onChange={(e: any) =>
-                            rolesSectionChange(
-                              e.currentTarget.checked,
-                              role,
-                              sectionStateName,
-                              sectionStateValue
-                            )
-                          }
-                          value={chkValue}
-                        />
-                      );
-                    })}
-                  </Col>
-                  <ImageCol lg="4">
-                    <Image src={yellow_blob_1} />
-                  </ImageCol>
-                </Row>
-              </GenericAccordion>
-            </Col>
-          </Row>
-        );
-      })}
+                        return (
+                          <Checkbox
+                            checked={isRoleInRolesSection(
+                              sectionStateValue,
+                              chk.value
+                            )}
+                            fieldType="checkbox"
+                            key={`${textHeader}-chk-${chkLabel}-${chkValue}`}
+                            label={chkLabel}
+                            onChange={(e: any) =>
+                              rolesSectionChange(
+                                e.currentTarget.checked,
+                                role,
+                                sectionStateName,
+                                sectionStateValue
+                              )
+                            }
+                            value={chkValue}
+                          />
+                        );
+                      })}
+                    </Col>
+                    <ImageCol lg="4">
+                      <Image src={yellow_blob_1} />
+                    </ImageCol>
+                  </Row>
+                </GenericAccordion>
+              );
+            })}
+          </StyledAccordion>
+        </Col>
+      </Row>
     </Container>
   );
 };
@@ -282,6 +286,12 @@ const ImageCol = styled(Col)`
   display: flex;
   max-height: 100%;
   max-width: 100%;
+`;
+
+const StyledAccordion = styled(Accordion)`
+  box-shadow: 2px 2px 10px #00000029;
+  border-radius: 8px;
+  opacity: 1;
 `;
 
 export default OffstageRoles;
