@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from '../../genericComponents/Button';
-import { colors } from '../../theme/styleVars';
 
 const SignUpFooter: React.FC<{
   landingStep: any;
@@ -75,10 +74,16 @@ const SignUpFooter: React.FC<{
           {steps.map((s: any, i: number) => (
             <li
               className={
-                i < stepIndex ? 'complete' : stepIndex === i ? 'active' : ''
+                i < stepIndex
+                  ? 'complete pagination-flow'
+                  : stepIndex === i
+                  ? 'active pagination-flow'
+                  : 'pagination-flow'
               }
               key={`sign-up-footer-page-bubble-${stepIndex}-${i}`}
-            />
+            >
+              {i + 1}
+            </li>
           ))}
         </Pagination>
       </Col>
@@ -114,29 +119,133 @@ const ButtonCol = styled(Col)`
 `;
 
 const Pagination = styled.ul`
-  align-items: center;
-  display: flex;
-  height: 100%;
-  justify-content: space-between;
+  display: block;
+  list-style-type: none;
   margin: 0;
   padding: 0;
-  width: 100%;
 
-  li {
-    border: 1px solid ${colors.darkGreen};
+  .pagination-flow {
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #d4d6df;
+    width: 29px;
+    height: 29px;
     border-radius: 50%;
-    height: 21px;
-    list-style-type: none;
-    width: 21px;
+    text-decoration: none;
+    font-weight: bold;
 
     &.complete {
-      background: ${colors.darkGreen}50;
+      background: #f9e9b1;
     }
 
     &.active {
-      background: ${colors.darkGreen};
+      background: #e9c268;
     }
+
+    &::after {
+      display: inline-block;
+      width: 29px;
+      height: 50%px;
+      content: "";
+      border-bottom: 2px solid black;
+      //background-color: black;
+      margin-right: -29px;
+    }
+
+    &:last-child::after {
+      display: none;
+    }
+
+    // &:not(:first-child){
+    //   transform: translateY(4px);
+    // }
   }
 `;
 
 export default SignUpFooter;
+
+// const Pagination = styled.ul`
+//   align-items: center;
+//   display: block;
+//   height: 100%;
+//   // justify-content: space-between;
+//   margin: 0;
+//   padding: 0;
+//   width: 100%;
+//   padding-right: 29px;
+
+//   .pagination-flow {
+//     width: 29px;
+//     line-height: 29px;
+//     border-radius: 50%;
+//     text-align: center;
+//     font-size: 12px;
+//     // border: 1px solid #d4d6df;
+//     background: #d4d6df;
+//     list-style-type: none;
+//     position: relative;
+//     font-family: Montserrat;
+//     justify-content: center;
+//     align-items: center;
+//     // margin: 10px 0;
+//     // display: block
+//     display: inline-flex;
+//     // flex: 0 1 100%; /* Default */
+
+//     &.complete {
+//       background: #f9e9b1;
+//       // border: 1px solid #f9e9b1;
+//     }
+
+//     &.active {
+//       background: #e9c268;
+//       // border: 1px solid #e9c268;
+//     }
+//   }
+
+//   .pagination-flow:not(:last-child):after {
+//     display: inline-block;
+//     position: absolute;
+//     content: "";
+//     //right: -50%;
+//     margin-right: -29px;
+//     top: 0%;
+//     // width: 50%;
+//     width: 29px;
+//     height: 50%;
+//     border-bottom: 2px solid black;
+//     margin-left: 29px;
+//   }
+// `;
+
+// export default SignUpFooter;
+
+// This is the current implementation before the changes
+// const Pagination = styled.ul`
+//   align-items: center;
+//   display: flex;
+//   height: 100%;
+//   justify-content: space-between;
+//   margin: 0;
+//   padding: 0;
+//   width: 100%;
+
+//   li {
+//     border: 1px solid ${colors.darkGreen};
+//     border-radius: 50%;
+//     height: 21px;
+//     list-style-type: none;
+//     width: 21px;
+
+//     &.complete {
+//       background: ${colors.darkGreen}50;
+//     }
+
+//     &.active {
+//       background: ${colors.darkGreen};
+//     }
+//   }
+// `;
